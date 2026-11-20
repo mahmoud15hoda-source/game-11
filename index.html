@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>رحلة البورصة الذكية</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#e8f1fb;color:#1c2b3a;text-align:center}
+#app{max-width:760px;margin:auto;padding:14px}
+header{display:flex;justify-content:space-between;background:#1f5fa8;color:#fff;padding:10px 16px;border-radius:12px;font-weight:bold}
+.card{background:#fff;border-radius:14px;padding:18px;margin-top:12px;box-shadow:0 2px 8px #0002}
+h1,h2{margin:6px 0}button{font:inherit;font-size:18px;padding:10px 20px;margin:6px;border:0;border-radius:10px;background:#1f5fa8;color:#fff;cursor:pointer}
+button:hover{background:#174a85}button.alt{background:#2e9e5b}button.bad{background:#c0392b}
+.item{display:inline-block;padding:10px 14px;margin:5px;background:#fff7d6;border:2px solid #e0b400;border-radius:10px;cursor:pointer;font-size:17px}
+.item.sel{background:#ffe27a;transform:scale(1.07)}
+.bucket{display:inline-block;width:46%;min-height:70px;margin:4px;padding:10px;border:3px dashed #1f5fa8;border-radius:12px;cursor:pointer;vertical-align:top;font-size:17px}
+.stmt{display:block;width:100%;text-align:right;background:#eef5ff;color:#1c2b3a;border:2px solid #9bbbe0}
+.stmt:hover{background:#d8e8fb}.ok{background:#c8f0d3!important;border-color:#2e9e5b!important}.no{background:#f7c9c4!important;border-color:#c0392b!important}
+#arena{position:relative;height:300px;background:#cfe6ff;border-radius:12px;overflow:hidden}
+.fall{position:absolute;padding:8px 12px;background:#fff;border-radius:10px;cursor:pointer;font-size:16px;box-shadow:0 2px 5px #0004}
+#msg{min-height:28px;font-weight:bold;margin:8px}
+</style></head><body><div id="app">
+<header><span id="stg">رحلة البورصة الذكية</span><span>⭐ النقاط: <b id="sc">0</b></span></header>
+<div class="card" id="main"></div></div>
+<script>
+let score=0,main=document.getElementById('main'),stg=document.getElementById('stg');
+const $=s=>document.getElementById(s);
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+function add(n){score+=n;$('sc').textContent=score}
+function start(){score=0;add(0);
+main.innerHTML='<h1>🏦 رحلة البورصة الذكية</h1><p>4 مراحل: فرز الأعمال، لاقط الأخطاء، بورصة الفصل، واصطياد الآمن.</p><button onclick="s1()">ابدأ اللعب</button>'}
+// المرحلة 1
+function s1(){stg.textContent='المرحلة 1: فرز الأعمال';
+const items=sh([["🎵 أغنية مشهورة",0],["🎬 فيلم سينمائي",0],["📚 كتاب حديث",0],["🎨 رسمة سمح صاحبها بمشاركتها",1],["📖 كتاب مؤلفه توفي منذ 60 عامًا",1],["📷 صورة سمح مصورها باستخدامها",1]]);
+let sel=null,left=items.length;
+main.innerHTML='<h2>اضغط على العمل ثم على المكان المناسب له</h2><div id="its"></div><div><div class="bucket" onclick="put(0)">©️ حقوق الطبع والنشر<br><small>(محمية)</small></div><div class="bucket" onclick="put(1)">🔓 المشاع الإبداعي<br><small>(مسموح بمشاركتها)</small></div></div><div id="msg"></div>';
+const box=$('its');
+items.forEach((it,i)=>{const d=document.createElement('span');d.className='item';d.textContent=it[0];d.onclick=()=>{if(sel!==null)box.children[sel].classList.remove('sel');sel=i;d.classList.add('sel')};box.appendChild(d)});
+window.put=b=>{if(sel===null){$('msg').textContent='اختر عملًا أولًا 👆';return}
+const d=box.children[sel];if(items[sel][1]===b){add(10);$('msg').textContent='✅ صح! +10';d.remove();
+// reindex
+const rest=[...box.children];items.splice(sel,1);sel=null;rest.forEach((el,i)=>el.onclick=()=>{if(sel!==null)box.children[sel].classList.remove('sel');sel=i;el.classList.add('sel')});
+if(--left==0)setTimeout(()=>next(s2,'أحسنت! أنت تفرق بين الحقوق والمشاع.'),600)}
+else{$('msg').textContent='❌ حاول مرة أخرى';d.classList.remove('sel');sel=null}}}
+function next(f,t){main.innerHTML='<h2>🎉 '+t+'</h2><button class="alt" onclick="'+f.name+'()">المرحلة التالية ◀</button>'}
+// المرحلة 2
+function s2(){stg.textContent='المرحلة 2: لاقط الأخطاء';
+const R=[[["السهم جزء صغير من ملكية الشركة","البورصة سوق لبيع وشراء الأسهم","التداول الإلكتروني هو بيع وشراء الأسهم عبر الإنترنت","البورصة بنك معرفة يتبادل فيه الأعضاء أفكارهم"],3],
+[["حقوق الملكية الفكرية تحمي القصص والرسومات","حقوق الطبع والنشر جزء من الملكية الفكرية","المشاع الإبداعي أعمال لا يجوز لأحد استخدامها","تصبح الأعمال ملكًا عامًا إذا توفي المؤلف منذ 50 عامًا"],2],
+[["استخدم كلمة مرور قوية جدًا","استخدم أي تطبيق متاح على الإنترنت للتداول","لا تضغط على الروابط الغريبة","أخبر شخصًا بالغًا موثوقًا إذا حدثت مشكلة"],1],
+[["الروبوت يقرأ آلاف الأخبار في ثوانٍ","الروبوت يقدم نصيحة للشخص البالغ","الروبوت يقرر بدلًا من الشخص البالغ","الروبوت يساعد على اتخاذ قرار أفضل"],2]];
+let r=0;
+(function show(){if(r>=R.length)return next(s3,'ممتاز! لقطت كل الأخطاء.');
+main.innerHTML='<h2>🔍 جملة واحدة فقط خاطئة، اضغط عليها ('+(r+1)+'/'+R.length+')</h2><div id="st"></div>';
+R[r][0].forEach((t,i)=>{const b=document.createElement('button');b.className='stmt';b.textContent=t;b.onclick=()=>{
+if(i===R[r][1]){b.classList.add('ok');add(15);b.textContent+=' ✅ هذه هي الخاطئة! +15';[...$('st').children].forEach(x=>x.onclick=null);r++;setTimeout(show,1500)}
+else{b.classList.add('no');b.onclick=null}};$('st').appendChild(b)})})()}
+// المرحلة 3
+function s3(){stg.textContent='المرحلة 3: بورصة الفصل';
+const S=[["أعلنت شركة الشوكولاتة عن منتج جديد. الروبوت: «اشترِ الآن، السعر سيرتفع».","buy"],
+["وصلك إعلان مجهول يعدك بأرباح سريعة جدًا ويطلب كلمة مرورك.","ignore"],
+["أعلنت شركة الألعاب عن خسائر كبيرة. الروبوت: «بع أسهمك الآن».","sell"],
+["لا توجد أخبار جديدة عن شركة الكتب، والسعر ثابت. الروبوت: «لا داعي للتسرع».","ignore"]];
+let m=1000,i=0;
+(function show(){if(i>=S.length){const g=m>=1400;add(g?20:10);return next(s4,'رصيدك النهائي '+m+' جنيه افتراضي')}
+main.innerHTML='<h2>💰 رصيدك: '+m+' جنيه</h2><p style="font-size:19px">📰 '+S[i][0]+'</p><p>الروبوت ينصح، أنت من يقرر!</p><button class="alt" id="b1">اشترِ 📈</button><button class="bad" id="b2">بع 📉</button><button id="b3">تجاهل ✋</button><div id="msg"></div>';
+[["buy","b1"],["sell","b2"],["ignore","b3"]].forEach(([k,id])=>$(id).onclick=()=>{
+const ok=S[i][1]===k;m+=ok?200:-150;add(ok?10:0);$('msg').textContent=ok?'✅ قرار ذكي! +200 جنيه':'❌ قرار غير مناسب -150 جنيه';
+['b1','b2','b3'].forEach(x=>$(x).onclick=null);i++;setTimeout(show,1600)})})()}
+// المرحلة 4
+function s4(){stg.textContent='المرحلة 4: اصطياد الآمن';
+main.innerHTML='<h2>اضغط على الآمن ✅ وتجنب الخطر ⚠️</h2><p>الوقت: <b id="tm">30</b> ثانية | نقاط المرحلة: <b id="ps">0</b></p><div id="arena"></div>';
+const good=["🔒 رابط https","💪 كلمة مرور قوية","🏛️ تطبيق تداول رسمي","👨‍👩‍👧 أخبرت والدي"],bad=["⚠️ أرباح سريعة!","🔗 رابط غريب","🔑 مشاركة كلمة السر","🎁 اربح الآن!"];
+let t=30,p=0;const ar=$('arena');
+const sp=setInterval(()=>{const g=Math.random()<.6,d=document.createElement('div');d.className='fall';
+d.textContent=g?good[Math.random()*4|0]:bad[Math.random()*4|0];d.style.right=Math.random()*70+'%';d.style.top=Math.random()*85+'%';
+d.onclick=()=>{p+=g?2:-2;add(g?2:-2);$('ps').textContent=p;d.style.background=g?'#c8f0d3':'#f7c9c4';d.onclick=null;setTimeout(()=>d.remove(),250)};
+ar.appendChild(d);setTimeout(()=>d.remove(),2000)},650);
+const tk=setInterval(()=>{$('tm').textContent=--t;if(t<=0){clearInterval(tk);clearInterval(sp);end()}},1000)}
+function end(){stg.textContent='النهاية';const st=score>=100?3:score>=60?2:1;
+main.innerHTML='<h1>🏆 انتهت الرحلة!</h1><h2>نقاطك: '+score+'</h2><div style="font-size:48px">'+'⭐'.repeat(st)+'</div><p>'+(st==3?'أنت خبير في التداول الآمن!':st==2?'أداء جيد، راجع الدرس وحاول مرة أخرى.':'راجع الدرس وجرب مرة ثانية!')+'</p><button class="alt" onclick="start()">العب من جديد 🔄</button>'}
+start();
+</script></body></html>
